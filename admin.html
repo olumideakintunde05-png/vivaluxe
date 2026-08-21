@@ -1,0 +1,320 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>VIVA LUXE — Admin</title>
+<link rel="stylesheet" href="styles.css">
+</head>
+<body class="admin-body">
+
+  <!-- ================= ADMIN LOGIN ================= -->
+  <div class="admin-login-wrap" id="adminLogin">
+    <div class="logo-wordmark">
+      
+    </div>
+    <h1>Admin Panel</h1>
+    <p class="sub">Sign in with your admin email and password.</p>
+    <p class="admin-error" id="adminLoginError"></p>
+    <input class="form-input" id="adminEmail" type="text" placeholder="Admin Email" autocomplete="username">
+    <input class="form-input" id="adminPassword" type="password" placeholder="Password" autocomplete="current-password">
+    <button class="btn-black" id="adminLoginBtn" onclick="adminLogin()" style="width:100%;justify-content:center;margin-top:6px;">Sign In</button>
+  </div>
+
+  <!-- ================= ADMIN APP ================= -->
+  <div class="admin-wrap" id="adminApp" style="display:none;">
+    <div class="admin-header">
+      <div style="display:flex;align-items:center;gap:12px;">
+        <button class="admin-hamburger-btn" id="adminHamburgerBtn" onclick="toggleAdminSidebar()" aria-label="Open menu">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 6h18M3 12h18M3 18h18"/></svg>
+        </button>
+        <div class="logo-wordmark">
+          <img src="logo-wordmark.png" alt="Viva Luxe" style="height:26px;">
+        </div>
+      </div>
+      <div class="admin-header-right">
+        <span id="adminEmailLabel"></span>
+        <button class="admin-logout-btn" onclick="adminLogout()">Log Out</button>
+      </div>
+    </div>
+
+    <!-- Backdrop shown behind the sidebar drawer on mobile -->
+    <div class="admin-sidebar-overlay" id="adminSidebarOverlay" onclick="closeAdminSidebar()"></div>
+
+    <div class="admin-layout">
+      <!-- ---------- Sidebar ---------- -->
+      <nav class="admin-sidebar" id="adminSidebar">
+        <div class="admin-sidebar-close">
+          <button onclick="closeAdminSidebar()" aria-label="Close menu" style="padding:6px;">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 6 6 18M6 6l12 12"/></svg>
+          </button>
+        </div>
+        <button class="admin-nav-item active" data-tab="dashboard" onclick="switchAdminTab('dashboard')">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="9" rx="1.5"/><rect x="14" y="3" width="7" height="5" rx="1.5"/><rect x="14" y="12" width="7" height="9" rx="1.5"/><rect x="3" y="16" width="7" height="5" rx="1.5"/></svg>
+          <span>Dashboard</span>
+        </button>
+        <button class="admin-nav-item" data-tab="products" onclick="switchAdminTab('products')">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20.5 7.3 12 3 3.5 7.3 12 11.6l8.5-4.3Z"/><path d="M3.5 7.3v9.4L12 21l8.5-4.3V7.3"/><path d="M12 11.6V21"/></svg>
+          <span>Products</span>
+        </button>
+        <button class="admin-nav-item" data-tab="orders" onclick="switchAdminTab('orders')">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 7h16l-1.5 12.5a1.5 1.5 0 0 1-1.5 1.5H7a1.5 1.5 0 0 1-1.5-1.5L4 7Z"/><path d="M8 7V5.5A2.5 2.5 0 0 1 10.5 3h3A2.5 2.5 0 0 1 16 5.5V7"/></svg>
+          <span>Orders</span>
+          <span class="admin-tab-badge" id="pendingOrdersBadge" style="display:none;">0</span>
+        </button>
+        <button class="admin-nav-item" data-tab="sitetext" onclick="switchAdminTab('sitetext')">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 6h16M4 12h10M4 18h13"/></svg>
+          <span>Site Text</span>
+        </button>
+        <button class="admin-nav-item" data-tab="settings" onclick="switchAdminTab('settings')">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 1 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06A1.65 1.65 0 0 0 4.68 15a1.65 1.65 0 0 0-1.51-1H3a2 2 0 1 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06A1.65 1.65 0 0 0 9 4.6a1.65 1.65 0 0 0 1-1.51V3a2 2 0 1 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06A1.65 1.65 0 0 0 19.4 9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 1 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1Z"/></svg>
+          <span>Settings</span>
+        </button>
+      </nav>
+
+      <!-- ---------- Main content ---------- -->
+      <main class="admin-main">
+
+        <!-- ---------- Dashboard tab ---------- -->
+        <div class="admin-tab-panel" id="tabPanel-dashboard">
+          <div class="admin-toolbar">
+            <h1>Dashboard</h1>
+          </div>
+
+          <div class="dash-stats-grid">
+            <div class="dash-stat-card highlight">
+              <span class="dash-stat-label">Revenue This Week</span>
+              <span class="dash-stat-value" id="dashRevenue">₦0</span>
+              <span class="dash-stat-sub" id="dashRevenueSub">0 orders</span>
+            </div>
+            <div class="dash-stat-card">
+              <span class="dash-stat-label">Pending</span>
+              <span class="dash-stat-value" id="dashCountPending">0</span>
+            </div>
+            <div class="dash-stat-card">
+              <span class="dash-stat-label">Processing</span>
+              <span class="dash-stat-value" id="dashCountProcessing">0</span>
+            </div>
+            <div class="dash-stat-card">
+              <span class="dash-stat-label">Shipped</span>
+              <span class="dash-stat-value" id="dashCountShipped">0</span>
+            </div>
+            <div class="dash-stat-card">
+              <span class="dash-stat-label">Delivered</span>
+              <span class="dash-stat-value" id="dashCountDelivered">0</span>
+            </div>
+            <div class="dash-stat-card">
+              <span class="dash-stat-label">Rejected</span>
+              <span class="dash-stat-value" id="dashCountRejected">0</span>
+            </div>
+          </div>
+
+          <div class="dash-panels-grid">
+            <div class="dash-panel">
+              <h3>Best Sellers</h3>
+              <div id="dashBestSellers"></div>
+            </div>
+          </div>
+        </div>
+
+        <!-- ---------- Products tab ---------- -->
+        <div class="admin-tab-panel" id="tabPanel-products" style="display:none;">
+          <div class="admin-toolbar">
+            <h1>Products</h1>
+            <div class="admin-toolbar-actions">
+              <button class="btn-outline" id="importSeedBtn" onclick="importStarterProducts()">
+                Import Starter Products
+              </button>
+              <button class="btn-black" onclick="openProductModal()">
+                Add Product
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M12 5v14M5 12h14"/></svg>
+              </button>
+            </div>
+          </div>
+
+          <div class="admin-filter-select-wrap">
+            <select class="form-input admin-filter-select" id="productCategoryFilterSelect" onchange="setProductCategoryFilter(this.value)"></select>
+          </div>
+
+          <div class="admin-table-wrap">
+            <div class="admin-row head">
+              <span></span>
+              <span>Product</span>
+              <span class="col-tab">Category</span>
+              <span class="col-rating">Price</span>
+              <span>Stock</span>
+              <span></span>
+            </div>
+            <div id="adminProductRows"></div>
+          </div>
+        </div>
+
+        <!-- ---------- Orders tab ---------- -->
+        <div class="admin-tab-panel" id="tabPanel-orders" style="display:none;">
+          <div class="admin-toolbar">
+            <h1>Orders &amp; Payments</h1>
+          </div>
+          <div class="admin-order-search">
+            <input class="form-input" id="orderSearchInput" type="text" placeholder="Search by customer name, phone, or order #" oninput="renderAdminOrders()">
+          </div>
+          <div class="admin-filter-select-wrap">
+            <select class="form-input admin-filter-select" id="orderStatusFilterSelect" onchange="setOrderFilter(this.value)">
+              <option value="all">All</option>
+              <option value="pending">Pending</option>
+              <option value="processing">Processing</option>
+              <option value="shipped">Shipped</option>
+              <option value="delivered">Delivered</option>
+              <option value="rejected">Rejected</option>
+            </select>
+          </div>
+          <div id="adminOrdersWrap"></div>
+        </div>
+
+        <!-- ---------- Settings tab ---------- -->
+        <div class="admin-tab-panel" id="tabPanel-settings" style="display:none;">
+          <div class="admin-toolbar">
+            <h1>Settings</h1>
+          </div>
+
+          <div class="admin-settings-grid">
+            <div class="admin-settings-card">
+              <h3>Store Contact</h3>
+              <label>WhatsApp Number</label>
+              <input class="form-input" id="setWhatsapp" type="text" placeholder="e.g. 2348012345678 (no + or spaces)">
+              <label>Contact Email</label>
+              <input class="form-input" id="setEmail" type="email" placeholder="e.g. hello@vivaluxe.com">
+              <button class="btn-black" id="saveContactBtn" onclick="saveContactSettings()">Save Contact Info</button>
+              <p class="admin-settings-status" id="contactSaveStatus"></p>
+            </div>
+
+            <div class="admin-settings-card">
+              <h3>Delivery</h3>
+              <label>Free delivery threshold (₦)</label>
+              <input class="form-input" id="setFreeThreshold" type="number" min="0" placeholder="150000">
+              <label>Default delivery fee (₦) — used for any location not listed below</label>
+              <input class="form-input" id="setDefaultFee" type="number" min="0" placeholder="2500">
+              <label style="margin-top:10px;">Per-location delivery fees (₦)</label>
+              <div id="stateFeeRows" class="admin-state-fee-rows"></div>
+              <button class="btn-black" id="saveDeliveryBtn" onclick="saveDeliverySettings()">Save Delivery Settings</button>
+              <p class="admin-settings-status" id="deliverySaveStatus"></p>
+            </div>
+
+            <div class="admin-settings-card">
+              <h3>Change Admin Password</h3>
+              <label>Current Password</label>
+              <input class="form-input" id="pwCurrent" type="password" autocomplete="current-password">
+              <label>New Password</label>
+              <input class="form-input" id="pwNew" type="password" autocomplete="new-password">
+              <label>Confirm New Password</label>
+              <input class="form-input" id="pwConfirm" type="password" autocomplete="new-password">
+              <button class="btn-black" id="changePwBtn" onclick="changeAdminPassword()">Update Password</button>
+              <p class="admin-settings-status" id="pwSaveStatus"></p>
+            </div>
+          </div>
+        </div>
+
+        <!-- ---------- Site Text tab ---------- -->
+        <div class="admin-tab-panel" id="tabPanel-sitetext" style="display:none;">
+          <div class="admin-toolbar">
+            <h1>Site Text &amp; Section Titles</h1>
+          </div>
+
+          <div class="admin-settings-grid">
+            <div class="admin-settings-card">
+              <h3>Site Text &amp; Section Titles</h3>
+              <label>Shop page heading</label>
+              <input class="form-input" id="txtShopPageTitle" type="text" placeholder="Shop">
+              <label>"Shop by Category" heading</label>
+              <input class="form-input" id="txtShopByCategory" type="text" placeholder="Shop by Category">
+              <label>"Product Categories" heading</label>
+              <input class="form-input" id="txtProductCategories" type="text" placeholder="Product Categories">
+              <label>"Our Products" heading</label>
+              <input class="form-input" id="txtOurProducts" type="text" placeholder="Our Products">
+              <label>Perfume concierge heading</label>
+              <input class="form-input" id="txtPerfumeHeading" type="text" placeholder="Need a perfume?">
+              <label>"Why Us" heading</label>
+              <input class="form-input" id="txtWhyUs" type="text" placeholder="Why Us">
+              <label>Email signup heading</label>
+              <input class="form-input" id="txtEmailUpdates" type="text" placeholder="Get e-mail updates">
+              <label>Reviews heading</label>
+              <input class="form-input" id="txtReviews" type="text" placeholder="Reviews">
+              <label>FAQ heading</label>
+              <input class="form-input" id="txtFaq" type="text" placeholder="Frequently Asked">
+              <button class="btn-black" id="saveSiteTextBtn" onclick="saveSiteTextSettings()">Save Site Text</button>
+              <p class="admin-settings-status" id="siteTextSaveStatus"></p>
+            </div>
+          </div>
+        </div>
+
+      </main>
+    </div>
+  </div>
+
+<!-- JESUS IS LORD -->
+  <!-- ================= PRODUCT ADD/EDIT MODAL ================= -->
+  <div class="admin-modal-overlay" id="productModalOverlay">
+    <div class="admin-modal">
+      <h3 id="productModalTitle">Add Product</h3>
+
+      <label style="font-size:11px;color:var(--grey);display:block;margin-bottom:6px;">Photos (first one is the cover photo shown in the shop)</label>
+      <div class="pd-upload-row">
+        <div class="admin-upload-slot">
+          <div class="admin-upload-preview" id="uploadPreview0">Photo 1</div>
+          <input type="file" id="productImageFile0" accept="image/*" onchange="handleImageSelect(event, 0)">
+        </div>
+        <div class="admin-upload-slot">
+          <div class="admin-upload-preview" id="uploadPreview1">Photo 2</div>
+          <input type="file" id="productImageFile1" accept="image/*" onchange="handleImageSelect(event, 1)">
+        </div>
+        <div class="admin-upload-slot">
+          <div class="admin-upload-preview" id="uploadPreview2">Photo 3</div>
+          <input type="file" id="productImageFile2" accept="image/*" onchange="handleImageSelect(event, 2)">
+        </div>
+      </div>
+
+      <input class="form-input" id="pName" type="text" placeholder="Product Name (e.g. Tennis Bracelet)">
+      <input class="form-input" id="pSub" type="text" placeholder="Subtitle (e.g. Cubic Zirconia)">
+      <label style="font-size:11px;color:var(--grey);display:block;margin-bottom:4px;">Category *</label>
+      <select class="form-input" id="pCategory" required></select>
+      <input class="form-input" id="pKicker" type="text" placeholder="Tag on card (optional, e.g. Ring, Bracelet)">
+      <div class="admin-modal-row">
+        <input class="form-input" id="pPrice" type="number" min="0" placeholder="Price (₦)">
+        <input class="form-input" id="pStock" type="number" min="0" placeholder="Stock (units available)">
+      </div>
+      <div class="admin-modal-row">
+        <input class="form-input" id="pRating" type="number" min="0" max="5" step="0.1" placeholder="Rating (e.g. 4.5)">
+        <input class="form-input" id="pCount" type="number" min="0" placeholder="Review Count">
+      </div>
+
+      <div class="admin-check-row">
+        <input type="checkbox" id="pHighlight">
+        <label for="pHighlight">Feature on homepage highlights</label>
+      </div>
+      <div class="admin-check-row">
+        <input type="checkbox" id="pIsNew">
+        <label for="pIsNew">Show in "New Arrivals" collection</label>
+      </div>
+      <div class="admin-check-row">
+        <input type="checkbox" id="pOnSale">
+        <label for="pOnSale">Show in "On Sale" collection</label>
+      </div>
+
+      <div class="admin-modal-actions">
+        <button class="btn-outline" onclick="closeProductModal()">Cancel</button>
+        <button class="btn-black" id="saveProductBtn" onclick="saveProduct()">Save Product</button>
+      </div>
+    </div>
+  </div>
+
+<script src="https://www.gstatic.com/firebasejs/10.13.0/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.13.0/firebase-auth-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.13.0/firebase-firestore-compat.js"></script>
+<script src="firebase-init.js"></script>
+<!-- data.js gives the admin panel the same NIGERIAN_STATES / delivery-fee
+     defaults as the storefront, so the Settings tab below can build its
+     per-location fee editor from one shared list instead of a duplicate. -->
+<script src="data.js"></script>
+<script src="seed-products.js"></script>
+<script src="admin.js"></script>
+</body>
+</html>
