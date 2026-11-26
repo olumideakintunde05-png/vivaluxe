@@ -497,7 +497,7 @@ function ratingHtml(rating, count){
 function renderCategoryTiles(){
   const row = document.getElementById('catTileRow');
   if(!row) return;
-  const featuredKeys = ['necklaces', 'earrings', 'bracelets', 'sunglasses'];
+  const featuredKeys = ['necklaces', 'earrings', 'bracelets', 'mens-watches'];
   const shown = featuredKeys
     .map(key => CATEGORIES.find(c => c.key === key))
     .filter(Boolean);
