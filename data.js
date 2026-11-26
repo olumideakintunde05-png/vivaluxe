@@ -38,7 +38,7 @@ const CATEGORIES = [
   { key:'anklets',       label:'Anklets',       icon:'pro5.jpg'  },
   { key:'jewelry-sets',  label:'Jewelry Sets',  icon:'pro6.jpg'  },
   { key:'stacks',        label:'Stacks',        icon:'pro7.jpg'  },
-  { key:'mens-watches',  label:"Men's Watches", icon:'pro8.jpg'  },
+  { key:'mens-watches',  label:"Men's Watches", icon:'pro9.jpg'  },
   { key:'sunglasses',    label:'Sunglasses',    icon:'pro9.jpg'  },
   { key:'wristwatches',  label:'Wristwatches',  icon:'pro10.jpg' },
 ];
